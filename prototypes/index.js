@@ -14,10 +14,6 @@ const { weapons, characters } = require('./datasets/ultima');
 const { dinosaurs, humans, movies } = require('./datasets/dinosaurs');
 
 
-
-
-
-
 // SINGLE DATASETS
 // =================================================================
 
@@ -53,6 +49,8 @@ const kittyPrompts = {
   // input: array of objects
   // output: array of objects in descending age order (b - a)
   // need to access obj age value (dot notatation) and sort by age (sort method)
+  // need to return b.age - a.age in function to store value in variable
+  // return variable with ordered array
   },
 
   growUp() {
@@ -68,15 +66,23 @@ const kittyPrompts = {
     //   color: 'orange'
     // },
     // ...etc]
-
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-  }
+   
+      const result = kitties.map(cat=> {
+        const container = {};
+        container.name = cat.name;
+        container.age = cat.age + 2;
+        container.color = cat.color;
+        return container;
+      }).sort((a, b) => { return b.age - a.age; });
+      return result;
+  },
 };
-
-
-
-
+// input: array of objects
+// output: array of objects with modified 'age' values
+// use map to iterate over array and copy to new array
+// reassign the age value of each object in the array (dot notation)
+// return modified array
+// sort modified array by age
 
 
 // ---------------------------------------------------------------------------
@@ -107,6 +113,7 @@ const clubPrompts = {
     // Annotation:
     // Write your annotation here as a comment
   }
+
 };
 
 
