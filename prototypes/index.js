@@ -67,15 +67,15 @@ const kittyPrompts = {
     // },
     // ...etc]
    
-      const result = kitties.map(cat=> {
-        const container = {};
-        container.name = cat.name;
-        container.age = cat.age + 2;
-        container.color = cat.color;
-        return container;
-      }).sort((a, b) => { return b.age - a.age; });
-      return result;
-  },
+    const result = kitties.map(cat=> {
+      const container = {};
+      container.name = cat.name;
+      container.age = cat.age + 2;
+      container.color = cat.color;
+      return container;
+    }).sort((a, b) => { return b.age - a.age; });
+    return result;
+  }
 };
 // input: array of objects
 // output: array of objects with modified 'age' values
@@ -107,13 +107,7 @@ const clubPrompts = {
     //   ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
-
-    // Annotation:
-    // Write your annotation here as a comment
   }
-
 };
 
 
@@ -144,11 +138,25 @@ const modPrompts = {
     //   { mod: 4, studentsPerInstructor: 8 }
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = mods
+      .map(mod => {
+        let newArray = {};
+        newArray.mod = mod.mod;
+        newArray.studentsPerInstructor = mod.students / mod.instructors;
+        return newArray;
+    });
+      
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Input: Array of objects with three properties
+    // Output: Array of objects with two properties
+    // Use map to iterate through original array (each 'mod' object)
+    // Declare new variable to store each of the modified objects in (assign to empty object)
+    // Create properties for new objects:
+    // mod property will be duplicated (no changes needed) so assign to current value
+    // Create new key 'studentsPerInstructor' and assign it the value of the current students divided by current instructors (from original array)
+    // Use got notation since I know the names of all keys
   }
 };
 
