@@ -92,10 +92,6 @@ const kittyPrompts = {
 // ---------------------------------------------------------------------------
 
 
-
-
-
-
 // DATASET: clubs from ./datasets/clubs
 const clubPrompts = {
   membersBelongingToClubs() {
@@ -107,22 +103,42 @@ const clubPrompts = {
     //   ...etc
     // }
 
+    // const result = clubs
+    // .reduce((acc, clubName) => {
+    //   let {members, club} = clubName;
+    //   return {...acc, [club]: [...(acc[club] || []), members]};
+    // }, {});
+
+    //    const result = clubs
+    // .reduce((acc, clubName) => {
+    //   let {members, club} = clubName;
+    //   return {...acc, members: [...(acc[members] || []), club]};
+
+    // }, {});
+
+
+    // return result;
+
+    // Annotation:
+    // input: array of objects for each club. Properties are club name and members which is an array.
+    // output: an object with key-value pairs being each members name (key) and an array (value) of the clubs the member belongs to.
+    // Iterate though array, access each persons name to create keys. Store in a new object (find? returns first value so won't have duplicates names?)
+    // Use reduce to return a single value (object)
+    // 1. use reduce to produce an array of names
+    // 2. filter through names to only save unique items
+    // 3. use reduce to store unique names to a new object
+    // 4. 
+    // Iterate through array again(?), push club name to an array for each member.
   }
+
 };
 
 
-
-
-
-
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
-
-
-
 
 
 
@@ -144,7 +160,7 @@ const modPrompts = {
         newArray.mod = mod.mod;
         newArray.studentsPerInstructor = mod.students / mod.instructors;
         return newArray;
-    });
+      });
       
     return result;
 
@@ -162,18 +178,11 @@ const modPrompts = {
 
 
 
-
-
-
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
-
-
-
-
 
 
 // DATASET: cakes from ./datasets/cakes
@@ -187,11 +196,22 @@ const cakePrompts = {
     //    ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes
+      .map(cake => {
+        let cakeStock = {};
+        cakeStock.flavor = cake.cakeFlavor;
+        cakeStock.inStock = cake.inStock;
+        return cakeStock;
+      });
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Input: array of objects with 5 properties
+    // Output: array of objects with 2 properties. One property (cakeFlavor) is modified (flavor)
+    // Use map to iterate over every object in array
+    // Create new object to store each modified object in
+    // use dot notation to add properties to the new object (flavor, inStock) and assigning values by accessing original object
+    // return new array of objects
   },
 
   onlyInStock() {
@@ -215,22 +235,32 @@ const cakePrompts = {
     // ..etc
     // ]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes.filter(cake => cake.inStock > 0);
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // input: Array of objects
+    // output: Array of objects that meet a condition (property inStock is greater than 0)
+    // use filter to check the condition and return the objects meeting condition
   },
 
   totalInventory() {
     // Return the total amount of cakes in stock e.g.
     // 59
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
-    return result;
+    const result = cakes.reduce((sum, cake) => {
+      sum += cake.inStock;
+      return sum;
+    }, 0);
+    return result; 
 
     // Annotation:
-    // Write your annotation here as a comment
+    // input: array of objects
+    // output: number (sum of the inStock values from each object)
+    // need to access the inStock values in each object and add them together
+    // use reduce? adding each inStock value to a running total (accumulator)
+    // need to use += to keep running total (and not just reassign)
+    // return the sum 
   },
 
   allToppings() {
@@ -238,14 +268,22 @@ const cakePrompts = {
     // every cake in the dataset e.g.
     // ['dutch process cocoa', 'toasted sugar', 'smoked sea salt', 'berries', ..etc]
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+    const result = cakes
+      .reduce((toppingsList, cake) => toppingsList.concat(cake.toppings), [])
+      .filter((topping, index, toppingsList) => {
+        return index === toppingsList.indexOf(topping);
+      });
     return result;
-
+    
     // Annotation:
-    // Write your annotation here as a comment
+    // input: array of objects
+    // output: array of the uniqueToppings values from each of the objects (no duplicates)
+    // use reduce to return a single value (array) from multiple objects in original array. Will produce an array of arrays (uniqueToppings).
+    // Join arrays together to make on array (concat()??)
+    // remove duplicates from list (filter?). Check if element already exists in array, if true then remove.
   },
 
-  groceryList() {
+  groceryList() { 
     // I need to make a grocery list. Please give me an object where the keys are
     // each topping, and the values are the amount of that topping I need to buy e.g.
     // {
@@ -256,17 +294,29 @@ const cakePrompts = {
     //    ...etc
     // }
 
-    const result = 'REPLACE WITH YOUR RESULT HERE';
+  
+    const result = cakes
+      .reduce((toppingsList, cake) => {
+        cake.toppings.forEach(topping => {
+          if (!toppingsList[topping]) {
+            toppingsList[topping] = 0;
+          }
+          toppingsList[topping]++ ;
+        });
+        return toppingsList;
+      }, {});
     return result;
 
     // Annotation:
-    // Write your annotation here as a comment
+    // Input: Array of objects
+    // Output: An object w. keys being each topping, and values being the amount of that topping needed to buy
+    // Use reduce as it returns one value (one object). Make {} the second parameter.
+    // 'loop' through each cake toppings list (forEach?) and add toppings to object:
+    ///// if the topping is NOT already in object then add it as a key (use bracket notation as it needs to be dynamic to take in any topping name)
+    ///// if the the topping IS already in the object then increment the value of the associated topping (use bracket notation)
+    // return the toppingslist to store new object
   }
 };
-
-
-
-
 
 
 // ---------------------------------------------------------------------------
@@ -944,3 +994,4 @@ module.exports = {
   bookPrompts,
   dinosaurPrompts
 };
+
